@@ -1,34 +1,30 @@
-import PropTypes from 'prop-types';
-import { Items, Item } from './ContactList.styled';
-import { ImCross } from 'react-icons/im';
+import { List, Item } from './ContactList.styled';
+import { useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
+import Contact from '../Contact';
 
-export default function ContactList({ contacts, onDeleteContact }) {
+const getVisibleContacts = (contacts, filter) => {
+  const normalizedFilter = filter.toLowerCase();
+
+  return contacts.filter(
+    ({ name, number }) =>
+      name.toLowerCase().includes(normalizedFilter) || number.includes(filter)
+  );
+};
+
+export default function ContactList() {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+
+  const visibleContacts = getVisibleContacts(contacts, filter);
+
   return (
-    <Items>
-      {contacts.map(({ id, name, number }) => (
+    <List>
+      {visibleContacts.map(({ id, name, number }) => (
         <Item key={id}>
-          <p>
-            {name}: {number}
-          </p>
-          <ImCross
-            onClick={() => onDeleteContact(id)}
-            color="#f13131"
-            size="17px"
-            cursor="pointer"
-          />
+          <Contact name={name} number={number} id={id} />
         </Item>
       ))}
-    </Items>
+    </List>
   );
 }
-
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  onDeleteContact: PropTypes.func.isRequired,
-};
