@@ -39,7 +39,7 @@ export default function ContactForm() {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      <FormList autoComplete="off">
+      <FormList autoComplete="on">
         <label htmlFor={nameInputId}>
           <p>Name</p>
           <Input
@@ -61,7 +61,7 @@ export default function ContactForm() {
             type="tel"
             name="number"
             placeholder="111-11-11"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            pattern="\+?\d{0,3}[-.\s]?\(?\d{1,3}\)?[-.\s]?\d{1,3}[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
